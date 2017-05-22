@@ -1,0 +1,19 @@
+/* your styles go here */
+
+.SearchIcon
+{
+    color:#fff;
+
+}
+.SearchButton
+{
+    background-color:#70c2f9;
+    border-radius:1px;
+}
+.SearchButton:hover{
+    background-color:#1c99ed;
+}
+
+.SearchBar{
+
+}

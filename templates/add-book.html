@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {% load staticfiles %}
+
+    <meta charset="utf-8">
+    <meta name="robots" content="all,follow">
+    <meta name="googlebot" content="index,follow,snippet,archive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Lightbeam - Online Course Book Solution</title>
+
+    <meta name="keywords" content="">
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,500,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- Bootstrap and Font Awesome css -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- Css animations  -->
+    <link href="../static/css/animate.css" rel="stylesheet">
+
+    <!-- Theme stylesheet, if possible do not edit this stylesheet -->
+    <link href="../static/css/style.default.css" rel="stylesheet" id="theme-stylesheet">
+
+    <!-- Custom stylesheet - for your changes -->
+    <link href="../static/css/custom.css" rel="stylesheet">
+
+    <!-- Responsivity for older IE -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+    <!-- Favicon and apple touch icons-->
+    <link rel="shortcut icon" href="../static/img/favicon.ico" type="image/x-icon" />
+</head>
+
+<body>
+
+
+    <div id="all">
+
+        <div id="heading-breadcrumbs">
+            <div class="container">
+                <div class="row">
+                    <h1>Add books</h1>
+                </div>
+            </div>
+        </div>
+
+        <div id="content" class="clearfix">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <!-- *** LEFT COLUMN ***
+			 _________________________________________________________ -->
+
+                    <div class="col-md-6 clearfix" id="add-book">
+
+                        <div class="box clearfix">
+                            <div class="heading">
+                                <h3 class="text-uppercase">Book details</h3>
+                            </div>
+                            <div id="add-new-book-banner" style="float: right">
+                                If you can't find the book, <a href="#" onclick="Add_New_Book();">you can add that.</a>
+                            </div>
+                            <div id="add-new-book"></div>
+                            {% if addBookForm.errors %}
+                            <div class="alert alert-danger">
+                                <strong>Error!</strong> Enter valid book name from suggestions.
+                            </div>
+                            {% elif addBookForm.success == 1 %}
+                            <div class="alert alert-success">
+                                <strong>Success!</strong> You have added the book.
+                            </div>
+                            {% elif addBookForm.success == 2 %}
+                            <div class="alert alert-warning">
+                                <strong>Warning!</strong> You have already added this book. Your entry is ignored.
+                            </div>
+                            {% endif %}
+
+                            <form id="add-book-form" action="/add-product/" method="post">
+                                {% csrf_token %}
+                                {% for field in addBookForm %}
+                                    <div class="form-group">
+                                        <label style="font-size: large"> {{ field.label }} </label></br>
+                                        {{ field }}
+                                    </div>
+                                {% endfor %}
+
+                                <div class="col-sm-12 text-center">
+                                    <button type="submit" class="btn btn-template-main"><i class="fa fa-save"></i> Add Book</button>
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-3 clearfix" id="add-books">
+
+                    </div>
+                    <!-- /.col-md-9 -->
+
+                    <!-- *** LEFT COLUMN END *** -->
+
+                    <!-- *** RIGHT COLUMN ***
+			 _________________________________________________________ -->
+
+                    <div class="col-md-3">
+                        <!-- *** CUSTOMER MENU ***
+ _________________________________________________________ -->
+                        <div class="panel panel-default sidebar-menu">
+
+                            <div class="panel-heading">
+                                <h3 class="panel-title">User section</h3>
+                            </div>
+
+                            <div class="panel-body">
+
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li>
+                                        <a href="/notifications/"><i class="fa fa-newspaper-o"></i> Notifications</a>
+                                    </li>
+									<li class="active">
+                                        <a href="/add-book/"><i class="fa fa-book"></i> Add books</a>
+                                    </li>
+									<li>
+                                        <a href="/search-books/"><i class="fa fa-search"></i> Search books</a>
+                                    </li>
+                                    <li>
+                                        <a href="/user-books/"><i class="fa fa-list"></i> My books</a>
+                                    </li>
+                                    <li>
+                                        <a href="/user-requests/"><i class="fa fa-heart"></i> My requests</a>
+                                    </li>
+                                    <li>
+                                        <a href="/home/"><i class="fa fa-user"></i> My account</a>
+                                    </li>
+                                    <li>
+                                        <a href="/logout/"><i class="fa fa-sign-out"></i> Logout</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <!-- /.col-md-3 -->
+
+                        <!-- *** CUSTOMER MENU END *** -->
+                    </div>
+
+                    <!-- *** RIGHT COLUMN END *** -->
+
+                </div>
+                <!-- /.row -->
+
+            </div>
+            <!-- /.container -->
+        </div>
+        <!-- /#content -->
+
+
+        <!-- *** FOOTER ***
+_________________________________________________________ -->
+
+        <footer id="footer">
+            <div class="container">
+                <div class="col-md-6 col-sm-6">
+                    <h4>About us</h4>
+
+                    <p>This is a term project by Tanjim (1305013) and Tareq(1305011) for Software Development course at CSE, BUET.</p>
+
+                </div>
+
+                <div class="col-md-6 col-sm-6">
+
+                    <h4>Contact</h4>
+
+                    <a href="#" class="facebook" data-animate-hover="pulse"><i class="fa fa-facebook"></i></a>
+                    <a href="#" class="email" data-animate-hover="pulse"><i class="fa fa-envelope"></i></a>
+                    <a href="#" class="external gplus" data-animate-hover="pulse"><i class="fa fa-google-plus"></i></a>
+                    <a href="#" class="external twitter" data-animate-hover="pulse"><i class="fa fa-twitter"></i></a>
+
+                </div>
+            </div>
+            <!-- /.container -->
+        </footer>
+        <!-- /#footer -->
+
+        <!-- *** FOOTER END *** -->
+
+        <!-- *** COPYRIGHT ***
+_________________________________________________________ -->
+
+        <div id="copyright">
+            <div class="container">
+                <div class="col-md-12">
+                    <p class="pull-left">&copy; 2017. Lightbeam</p>
+{#                    <p class="pull-right">Template by <a href="https://bootstrapious.com">Bootstrapious</a> & <a href="https://remoteplease.com">Remote Please</a>#}
+                         <!-- Not removing these links is part of the license conditions of the template. Thanks for understanding :) If you want to use the template without the attribution links, you can do so after supporting further themes development at https://bootstrapious.com/donate  -->
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- /#copyright -->
+
+        <!-- *** COPYRIGHT END *** -->
+
+
+
+    </div>
+    <!-- /#all -->
+
+
+    <!-- #### JAVASCRIPT FILES ### -->
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript">
+    </script> <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
+
+
+
+    <!-- JAVASCRIPT + JQuery functions  -->
+
+
+    <script src="../static/js/lightbeam.autocomplete.js" type="text/javascript"></script>
+
+    <script src="../static/js/lightbeam.addnewbook.js?2" type="text/javascript"></script>
+
+
+</body>
+
+</html>
