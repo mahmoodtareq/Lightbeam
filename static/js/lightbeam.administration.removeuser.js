@@ -3,6 +3,9 @@
  */
 
 function removeUser(user_id) {
+    if (!confirm('Are you sure to delete this user?')) {
+        return;
+    }
     $.ajax({
         type: "POST",
         url: "/administration-remove-user/",

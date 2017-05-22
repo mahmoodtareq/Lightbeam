@@ -67,13 +67,14 @@
                                              <td>
                                                  <img src="{{ admin.profile_picture.url }}" class="img-responsive" width="60" height="60" alt={{ admin.student_id }} >
                                              </td>
-                                             <td><a href="/user/{{ admin.id }}">{{ admin.first_name }} {{ admin.last_name }}</a></td>
                                              {% if id == admin.id %}
-                                                 <td><button type="button" class="btn btn-warning btn-xs" disabled>Remove Admin</button></td>
-                                                 <td><button type="button" class="btn btn-danger btn-xs" disabled>Remove User</button></td>
+                                                 <td><a href="/user/{{ admin.id }}">{{ admin.first_name }} {{ admin.last_name }}</a> (you)</td>
+                                                 <td><button type="button" class="btn btn-warning btn-xs" disabled><i class="fa fa-user-times"></i> Remove Admin</button></td>
+                                                 <td><button type="button" class="btn btn-danger btn-xs" disabled><i class="fa fa-close"></i> Remove User</button></td>
                                              {% else %}
-                                                 <td><button type="button" onclick="changeRole({{ admin.id }}, 'U');" class="btn btn-warning btn-xs">Remove Admin</button></td>
-                                                 <td><button type="button" onclick="removeUser({{ admin.id }});" class="btn btn-danger btn-xs">Remove User</button></td>
+                                                 <td><a href="/user/{{ admin.id }}">{{ admin.first_name }} {{ admin.last_name }}</a></td>
+                                                 <td><button type="button" onclick="changeRole({{ admin.id }}, 'U');" class="btn btn-warning btn-xs"><i class="fa fa-user-times"></i> Remove Admin</button></td>
+                                                 <td><button type="button" onclick="removeUser({{ admin.id }});" class="btn btn-danger btn-xs"><i class="fa fa-close"></i> Remove User</button></td>
                                              {% endif %}
 
                                          </tr>
@@ -94,8 +95,8 @@
                                                  <img src="{{ user.profile_picture.url }}" class="img-responsive" width="60" height="60" alt={{ user.student_id }} >
                                              </td>
                                              <td><a href="/user/{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</a></td>
-                                             <td><button type="button" onclick="changeRole({{ user.id }}, 'A');" class="btn btn-primary btn-xs">Make Admin</button></td>
-                                             <td><button type="button" onclick="removeUser({{ user.id }});" class="btn btn-danger btn-xs">Remove User</button></td>
+                                             <td><button type="button" onclick="changeRole({{ user.id }}, 'A');" class="btn btn-info btn-xs"><i class="fa fa-user-plus"></i> Make Admin</button></td>
+                                             <td><button type="button" onclick="removeUser({{ user.id }});" class="btn btn-danger btn-xs"><i class="fa fa-close"></i> Remove User</button></td>
                                          </tr>
                                         {% endfor %}
                                     </tbody>

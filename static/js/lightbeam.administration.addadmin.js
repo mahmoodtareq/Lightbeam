@@ -4,7 +4,9 @@
 
 
 function changeRole(user_id, role) {
-
+    if (!confirm('Are you sure change this user\'s role?')) {
+        return;
+    }
     $.ajax({
         type: "POST",
         url: "/administration-change-role/",
