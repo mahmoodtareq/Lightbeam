@@ -83,7 +83,7 @@ function Add_New_Book() {
                if (bookid > 0)
                {
                     button.className = "btn btn-success";
-                    button.innerHTML = "Successfully added to database";
+                    button.innerHTML = "<strong>Success!</strong> Waiting for admin approval.";
                     form.style.visibility = 'visible';      // Hide
                     document.getElementById("id_bookname").value = bookName.value;
                     document.getElementById("id_bookid").value = bookid;

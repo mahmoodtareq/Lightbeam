@@ -45,9 +45,14 @@ class Author(models.Model):
 
 class Book(models.Model):
     # id : integer
+    APROVAL_STATUSES = (
+        ('P', 'Pending Approval'),
+        ('A', 'Approved'),
+    )
     name = models.CharField(max_length=50)
     authors = models.ManyToManyField(Author)
     cover_picture = models.ImageField(upload_to='book_picture/', default='book_picture/default-book.png')
+    approval_status = models.CharField(max_length=1, default='A', choices=APROVAL_STATUSES)
 
     def __str__(self):
         return self.name
@@ -71,6 +76,7 @@ class Product(models.Model):
     condition = models.CharField(max_length=1, null=True, blank=True, choices=CONDITIONS)
     edition = models.IntegerField(null=True, blank=True)
     price = models.IntegerField(default=0)
+    date_time = models.DateTimeField(default=datetime.now, blank=True)
 
     class Meta:
         unique_together = (("owner", "book"),)

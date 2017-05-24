@@ -191,6 +191,8 @@ def add_new_book(request):
                 author = Author(name=author_name)
                 author.save()
             book.authors.add(author)
+        book.approval_status = 'P'
+        book.save()
         bookid = book.id
     else:
         bookid = 0

@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.http import HttpResponseRedirect
 
-from userapp.models import User
+from userapp.models import User, Product, Book, Author
 from .forms import *
 
 
@@ -85,5 +85,47 @@ def remove_user(request):
                 status = 1
             except Exception:
                 status = 0
+        mimetype = 'application/json'
+        return HttpResponse(status, mimetype)
+
+
+def book_approvals(request):
+    if not request.session.has_key('id'):
+        return HttpResponseRedirect('/')
+
+    id = request.session['id']
+    if not User.objects.get(id=id).role == 'A':
+        return HttpResponseRedirect('/')
+
+    template = loader.get_template('administration-book-approvals.html')
+    context = {
+        'pending_products' : Product.objects.filter(book__approval_status='P')
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def approve_book(request):
+    if not request.session.has_key('id'):
+        return HttpResponseRedirect('/')
+
+    id = request.session['id']
+    if not User.objects.get(id=id).role == 'A':
+        return HttpResponseRedirect('/')
+
+    if request.is_ajax():
+        product_id = request.POST['product_id']
+        action = request.POST['action']
+        try:
+            product = Product.objects.get(id=product_id)
+            if action == 'approve':
+                product.book.approval_status = 'A'
+                product.book.save()
+                product.save()
+            elif action == 'reject':
+                product.delete()
+                # generate notification
+            status = 1
+        except Exception:
+            status = 0
         mimetype = 'application/json'
         return HttpResponse(status, mimetype)
