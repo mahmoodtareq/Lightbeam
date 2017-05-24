@@ -46,7 +46,7 @@ class Author(models.Model):
 class Book(models.Model):
     # id : integer
     APROVAL_STATUSES = (
-        ('P', 'Pending Approval'),
+        ('P', 'Pending'),
         ('A', 'Approved'),
     )
     name = models.CharField(max_length=50)
@@ -90,6 +90,10 @@ class Product(models.Model):
         else:
             raise Exception
             'product information is invalid'
+
+    @property
+    def isBooked(self):
+        return Product.objects.filter(currentholder__product_id=self.id).count() == 1
 
 
 class Serial(models.Model):

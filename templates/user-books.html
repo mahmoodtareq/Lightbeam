@@ -68,6 +68,7 @@
                                             <tr>
                                                 <th>Book</th>
                                                 <th>Authors</th>
+                                                <th>Status</th>
                                                 <th>Price</th>
                                                 <th>Edition</th>
                                                 <th>Print</th>
@@ -87,6 +88,15 @@
                                                 <td>{% for author in product.book.authors.all %}
                                                     {{ author.name }} </br>
                                                 {% endfor %}
+                                                </td>
+                                                <td>
+                                                    {% if product.book.approval_status == 'P' %}
+                                                        <label class="label label-warning">Pending Approval</label>
+                                                    {% elif product.isBooked %}
+                                                        <label class="label label-success">Booked</label>
+                                                    {% elif product.book.approval_status == 'A' %}
+                                                        <label class="label label-info">Not Booked</label>
+                                                    {% endif %}
                                                 </td>
                                                 <td>{{ product.price }}</td>
 

@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3d1330f3-da2c-4f02-ba10-56717be65de5" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/lightbeam.administration.approve.book.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/administration-book-approvals.html" />
+    <list default="true" id="3d1330f3-da2c-4f02-ba10-56717be65de5" name="Default" comment="admin can approve or reject user-added-books">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/adminapp/urls.py" afterPath="$PROJECT_DIR$/adminapp/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/adminapp/views.py" afterPath="$PROJECT_DIR$/adminapp/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/lightbeam.addnewbook.js" afterPath="$PROJECT_DIR$/static/js/lightbeam.addnewbook.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/user-books.html" afterPath="$PROJECT_DIR$/templates/user-books.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/userapp/models.py" afterPath="$PROJECT_DIR$/userapp/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/userapp/views.py" afterPath="$PROJECT_DIR$/userapp/views.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -28,7 +23,7 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adminapp/views.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="166">
@@ -40,36 +35,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/adminapp/urls.py">
+      <file leaf-file-name="user-books.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/user-books.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="4" lean-forward="false" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
-              <folding>
-                <element signature="e#0#32#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="administration-book-approvals.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/administration-book-approvals.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="210" column="70" lean-forward="false" selection-start-line="210" selection-start-column="70" selection-end-line="210" selection-end-column="70" />
+            <state relative-caret-position="194">
+              <caret line="95" column="91" lean-forward="false" selection-start-line="95" selection-start-column="91" selection-end-line="95" selection-end-column="91" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="lightbeam.administration.approve.book.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/js/lightbeam.administration.approve.book.js">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/userapp/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="20" column="48" lean-forward="false" selection-start-line="20" selection-start-column="48" selection-end-line="20" selection-end-column="48" />
-              <folding>
-                <element signature="n#!!doc;n#approveBook#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="200">
+              <caret line="95" column="33" lean-forward="false" selection-start-line="95" selection-start-column="33" selection-end-line="95" selection-end-column="33" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -102,13 +83,14 @@
         <option value="$PROJECT_DIR$/static/js/lightbeam.administration.removeuser.js" />
         <option value="$PROJECT_DIR$/static/js/lightbeam.administration.addadmin.js" />
         <option value="$PROJECT_DIR$/templates/administration.book.approvals.html" />
-        <option value="$PROJECT_DIR$/userapp/models.py" />
         <option value="$PROJECT_DIR$/userapp/views.py" />
         <option value="$PROJECT_DIR$/static/js/lightbeam.addnewbook.js" />
         <option value="$PROJECT_DIR$/adminapp/urls.py" />
         <option value="$PROJECT_DIR$/static/js/lightbeam.administration.approve.book.js" />
         <option value="$PROJECT_DIR$/templates/administration-book-approvals.html" />
         <option value="$PROJECT_DIR$/adminapp/views.py" />
+        <option value="$PROJECT_DIR$/templates/user-books.html" />
+        <option value="$PROJECT_DIR$/userapp/models.py" />
       </list>
     </option>
   </component>
@@ -524,6 +506,14 @@
       <option name="presentableId" value="Default" />
       <updated>1495450804509</updated>
     </task>
+    <task id="LOCAL-00001" summary="admin can approve or reject user-added-books">
+      <created>1495597189157</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1495597189157</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -561,6 +551,8 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
+    <MESSAGE value="admin can approve or reject user-added-books" />
+    <option name="LAST_COMMIT_MESSAGE" value="admin can approve or reject user-added-books" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -610,7 +602,7 @@
         <state relative-caret-position="85">
           <caret line="7" column="73" lean-forward="false" selection-start-line="7" selection-start-column="73" selection-end-line="7" selection-end-column="73" />
           <folding>
-            <element signature="e#0#32#0" expanded="true" />
+            <element signature="e#0#32#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -658,7 +650,7 @@
         <state relative-caret-position="85">
           <caret line="7" column="73" lean-forward="false" selection-start-line="7" selection-start-column="73" selection-end-line="7" selection-end-column="73" />
           <folding>
-            <element signature="e#0#32#0" expanded="true" />
+            <element signature="e#0#32#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -739,13 +731,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/adminapp/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/js/lightbeam.administration.removeadmin.js" />
     <entry file="file://$PROJECT_DIR$/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
@@ -788,26 +773,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/userapp/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="78" column="70" lean-forward="false" selection-start-line="78" selection-start-column="70" selection-end-line="78" selection-end-column="70" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/userapp/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="183">
           <caret line="194" column="19" lean-forward="false" selection-start-line="194" selection-start-column="19" selection-end-line="194" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/user-books.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="85" column="64" lean-forward="true" selection-start-line="85" selection-start-column="52" selection-end-line="85" selection-end-column="64" />
           <folding />
         </state>
       </provider>
@@ -835,7 +804,7 @@
         <state relative-caret-position="136">
           <caret line="8" column="4" lean-forward="false" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
           <folding>
-            <element signature="e#0#32#0" expanded="true" />
+            <element signature="e#0#32#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -873,6 +842,30 @@
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adminapp/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/user-books.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="95" column="91" lean-forward="false" selection-start-line="95" selection-start-column="91" selection-end-line="95" selection-end-column="91" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/userapp/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="95" column="33" lean-forward="false" selection-start-line="95" selection-start-column="33" selection-end-line="95" selection-end-column="33" />
+          <folding />
         </state>
       </provider>
     </entry>
