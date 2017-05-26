@@ -285,11 +285,14 @@ def profile(request, user_id):
     if not request.session.has_key('id'):
         return HttpResponseRedirect('/')
     template = loader.get_template('profile.html')
-    # product = Product.objects.filter(id=product_id)
-    # print(product)
+
+    try:
+        user = User.objects.get(id=user_id)
+    except Exception:
+        return render(request, 'not-found.html')
 
     context = {
-        'user' : User.objects.get(id=user_id),
+        'user' : user,
     }
     return HttpResponse(template.render(context, request))
 
