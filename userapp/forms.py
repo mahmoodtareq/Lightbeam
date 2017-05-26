@@ -53,3 +53,31 @@ class AddBookForm(forms.Form):
         self.fields['bookname'].widget.attrs['class'] = 'form-control'
         self.fields['edition'].widget.attrs['class'] = 'form-control'
         self.fields['price'].widget.attrs['class'] = 'form-control'
+
+
+class SearchForm(forms.Form):
+    SEARCH_CHOICES = {
+        ('B', 'Book'),
+        ('A', 'Author'),
+        ('C', 'Category')
+    }
+    query = forms.CharField(max_length=50)
+    search_for = forms.ChoiceField(label='Search For', choices=SEARCH_CHOICES,
+                                   widget=forms.RadioSelect(renderer=HorizontalRadioRenderer), required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(SearchForm, self).__init__(*args, **kwargs)
+        self.fields['query'].widget.attrs['class'] = 'form-control search-query'
+
+
+class ProfileForm(forms.Form):
+    address = forms.CharField(label='Address', max_length=30, min_length=2)
+    mobile_no = forms.CharField(label='Mobile No', max_length=11, min_length=11)
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class': 'form-control'
+            })

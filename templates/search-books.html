@@ -25,8 +25,10 @@
     <link href="../static/css/style.default.css" rel="stylesheet" id="theme-stylesheet">
 
     <!-- Custom stylesheet - for your changes -->
-    <link href="../static/css/custom.css" rel="stylesheet" id="theme-stylesheet">
+    <link href="../static/css/custom.css" rel="stylesheet">
 
+    <!-- search bar css -->
+    <link href="../static/css/search.bar.css" rel="stylesheet">
 
     <!-- Responsivity for older IE -->
     <!--[if lt IE 9]>
@@ -36,6 +38,7 @@
 
     <!-- Favicon and apple touch icons-->
     <link rel="shortcut icon" href="../static/img/favicon.ico" type="image/x-icon" />
+
 </head>
 
 <body>
@@ -58,28 +61,65 @@
                 <div class="row">
 
                     <div class="col-md-6 clearfix" id="#">
-                        <div class="input-group">
-                            <input type="text" id="id_bookname" class="form-control" placeholder="Search for books...">
-                            <span class="input-group-btn">
-                                <button class="btn btn-info" type="button">
-                                    <span class=" glyphicon glyphicon-search"></span>
-                                </button>
-                          </span>
-                        </div>
+                        <form class="form-search" action="/search/" method="post">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                {{ searchForm.query }}
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary"> Search</button>
+                                </span>
+                            </div>
+                            <div>
+                                {{ searchForm.search_for.label }} :
+                                {{ searchForm.search_for }}
+                            </div>
+                        </form>
+
+
+                        {% for product in result %}
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">{{ product.book.name }}</div>
+                                <div class="panel-body">
+                                    <div style="float: left">
+                                        Owner <a href="/user/{{ product.owner.id }}">{{ product.owner.first_name }} {{ product.owner.last_name }}</a><br>
+                                        Authors:
+                                        {% for author in product.book.authors.all %}
+                                            {{ author.name }}
+                                        {% endfor %}
+                                        <br><br>
+                                        {% if product.serial_count == 0 %}
+                                            <button id="btn-{{ product.id }}" onclick="bookTheBook(this, {{ product.id }})" type="button" class="btn btn-primary">Book the book!</button>
+                                            <span id="txt-{{ product.id }}" style="font-size: small; font-family: Consolas; color: #a02121"></span>
+                                            <div id="contact-{{ product.id }}" style="font-size: small; font-family: Consolas; color: green"></div>
+                                        {% else %}
+                                            <button id="btn-{{ product.id }}" onclick="standInQueue(this, {{ product.id }})" type="button" class="btn btn-warning">Stand in queue</button>
+                                            <span id="txt-{{ product.id }}" style="font-size: small; font-family: Consolas; color: #a02121">
+                                                (Currently {{ product.serial_count }} people are in queue.)
+                                            </span>
+                                        {% endif %}
+                                    </div>
+
+                                    <img src="{{ product.book.cover_picture.url }}" alt="" style="float: right" class="img-responsive center-block" height="80px" width="80px" />
+                                </div>
+{#                                <div class="panel-footer">#}
+{#                                    <button type="button" class="btn btn-primary">Book the book!</button>#}
+{#                                </div>#}
+{#                                <div class="panel-group"><img src="{{ product.book.cover_picture.url }}" alt="" class="img-responsive center-block" height="50px" width="50px" />#}
+{#                                </div>#}
+{#                                {{ book.name }}#}
+                            </div>
+                        {% endfor %}
+
+
                     </div>
-                    <!-- /.col-md-9 -->
 
                     <div class="col-md-3 clearfix" id="#">
-                        <br><br><br>
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Filter Search</h3>
-                        </div>
-                        <h6>Filter By Print Status</h6>
-                        <br>
-                        <h6>Filter By Edition</h6>
-                        <br>
-                        <h6>Filter By Condition</h6>
+
+
+
                     </div>
+
+                    <!-- /.col-md-9 -->
 
                     <!-- *** LEFT COLUMN END *** -->
 
@@ -175,7 +215,7 @@ _________________________________________________________ -->
             <div class="container">
                 <div class="col-md-12">
                     <p class="pull-left">&copy; 2017. Lightbeam</p>
-{#                    <p class="pull-right">Template by <a href="https://bootstrapious.com">Bootstrapious</a> & <a href="https://remoteplease.com">Remote Please</a>#}
+                    <p class="pull-right">Template by <a href="https://bootstrapious.com">Bootstrapious</a> & <a href="https://remoteplease.com">Remote Please</a>
                          <!-- Not removing these links is part of the license conditions of the template. Thanks for understanding :) If you want to use the template without the attribution links, you can do so after supporting further themes development at https://bootstrapious.com/donate  -->
                     </p>
                 </div>
@@ -197,9 +237,11 @@ _________________________________________________________ -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript">
     </script> <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
 
-    <!-- JAVASCRIPT + JQuery functions  -->
-    <script src="../static/js/lightbeam.autocomplete.js" type="text/javascript"></script>
-
+    <script>
+        var csrftoken = '{{ csrf_token }}';
+    </script>
+    <script src="../static/js/lightbeam.search.book.js" type="text/javascript"></script>
+    <script src="../static/js/lightbeam.stand.in.queue.js" type="text/javascript"></script>
 
 </body>
 

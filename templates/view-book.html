@@ -27,6 +27,9 @@
     <!-- Custom stylesheet - for your changes -->
     <link href="../static/css/custom.css" rel="stylesheet">
 
+    <!-- search bar css -->
+    <link href="../static/css/search.bar.css" rel="stylesheet">
+
     <!-- Responsivity for older IE -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -35,6 +38,7 @@
 
     <!-- Favicon and apple touch icons-->
     <link rel="shortcut icon" href="../static/img/favicon.ico" type="image/x-icon" />
+
 </head>
 
 <body>
@@ -45,7 +49,7 @@
         <div id="heading-breadcrumbs">
             <div class="container">
                 <div class="row">
-                    <h1>My Requests </h1>
+                    <h1>View Book</h1>
                 </div>
             </div>
         </div>
@@ -56,53 +60,48 @@
 
                 <div class="row">
 
-                    <div class="col-md-9 clearfix" id="#">
-                        <p class="text-muted lead">You currently have {{ userRequests.count }} request(s).</p>
-                        <div class="box">
-                            <form method="post" action="/update-user-books/">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Book</th>
-                                                <th>Owner</th>
-                                                <th>Status</th>
-                                                <th>Info</th>
-                                                <th>Delete</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for requests in userRequests %}
-                                             <tr>
-{#                                                <td>#}
-{#                                                    <a href="#">#}
-{#                                                        <img src="{{ product.owner.profile_picture.url }}" style="max-width: 30%;height: auto;" alt={{ product.book.name }} >#}
-{#                                                    </a>#}
-{#                                                </td>#}
-                                                <td><a href="/view-book/{{ requests.product.id }}">{{ requests.product.book.name }}</a></td>
-                                                <td><a href="/user/{{ requests.product.owner.id }}">{{ requests.product.owner.first_name}} {{ requests.product.owner.last_name}}</a></td>
+                    <div class="col-md-6 clearfix" id="#">
 
+                         <div class="panel panel-primary">
+                                <div class="panel-heading">{{ product.book.name }}</div>
+                                <div class="panel-body">
+                                    <div style="float: left">
+                                        Owner <a href="#">{{ product.owner.first_name }} {{ product.owner.last_name }}</a><br>
+                                        Authors:
+                                        {% for author in product.book.authors.all %}
+                                            {{ author.name }}
+                                        {% endfor %}
+                                        <br><br>
+                                        {% if product.serial_count == 0 %}
+                                            <button id="btn-{{ product.id }}" onclick="bookTheBook(this, {{ product.id }})" type="button" class="btn btn-primary">Book the book!</button>
+                                            <span id="txt-{{ product.id }}" style="font-size: small; font-family: Consolas; color: #a02121"></span>
+                                            <div id="contact-{{ product.id }}" style="font-size: small; font-family: Consolas; color: green"></div>
+                                        {% else %}
+                                            <button id="btn-{{ product.id }}" onclick="standInQueue(this, {{ product.id }})" type="button" class="btn btn-warning">Stand in queue</button>
+                                            <span id="txt-{{ product.id }}" style="font-size: small; font-family: Consolas; color: #a02121">
+                                                (Currently {{ product.serial_count }} people are in queue.)
+                                            </span>
+                                        {% endif %}
+                                    </div>
 
-                                                 {% if requests.serial_no == 1 %}<td><span class="label label-success">booked</span></td>
-                                                {% else %}<td><span class="label label-warning">in queue</span></td>
-                                                {% endif %}
-
-                                                {% if requests.serial_no == 1 %}<td>Collect the book in some days</td>
-                                                {% else %}<td>You are at position {{ requests.serial_no }} in the queue</td>
-                                                {% endif %}
-                                                <td><a href="#"><i class="fa fa-trash-o" onclick="Remove()"></i></a></td>
-                                             </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
+                                    <img src="{{ product.book.cover_picture.url }}" alt="" style="float: right" class="img-responsive center-block" height="80px" width="80px" />
                                 </div>
-                            </form>
+{#                                <div class="panel-footer">#}
+{#                                    <button type="button" class="btn btn-primary">Book the book!</button>#}
+{#                                </div>#}
+{#                                <div class="panel-group"><img src="{{ product.book.cover_picture.url }}" alt="" class="img-responsive center-block" height="50px" width="50px" />#}
+{#                                </div>#}
+{#                                {{ book.name }}#}
+                            </div>
 
-{#                            <img src="{{ product.book.cover_picture.url }}" >#}
-
-
-                        </div>
                     </div>
+
+                    <div class="col-md-3 clearfix" id="#">
+
+
+
+                    </div>
+
                     <!-- /.col-md-9 -->
 
                     <!-- *** LEFT COLUMN END *** -->
@@ -134,7 +133,7 @@
                                     <li>
                                         <a href="/user-books/"><i class="fa fa-list"></i> My books</a>
                                     </li>
-                                    <li class="active">
+                                    <li>
                                         <a href="/user-requests/"><i class="fa fa-heart"></i> My requests</a>
                                     </li>
                                     <li>
@@ -199,7 +198,7 @@ _________________________________________________________ -->
             <div class="container">
                 <div class="col-md-12">
                     <p class="pull-left">&copy; 2017. Lightbeam</p>
-{#                    <p class="pull-right">Template by <a href="https://bootstrapious.com">Bootstrapious</a> & <a href="https://remoteplease.com">Remote Please</a>#}
+                    <p class="pull-right">Template by <a href="https://bootstrapious.com">Bootstrapious</a> & <a href="https://remoteplease.com">Remote Please</a>
                          <!-- Not removing these links is part of the license conditions of the template. Thanks for understanding :) If you want to use the template without the attribution links, you can do so after supporting further themes development at https://bootstrapious.com/donate  -->
                     </p>
                 </div>
@@ -221,8 +220,11 @@ _________________________________________________________ -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript">
     </script> <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
 
-
-
+    <script>
+        var csrftoken = '{{ csrf_token }}';
+    </script>
+    <script src="../static/js/lightbeam.search.book.js" type="text/javascript"></script>
+    <script src="../static/js/lightbeam.stand.in.queue.js" type="text/javascript"></script>
 
 </body>
 

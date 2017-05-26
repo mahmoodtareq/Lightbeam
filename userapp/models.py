@@ -43,6 +43,13 @@ class Author(models.Model):
         return self.name
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
 class Book(models.Model):
     # id : integer
     APROVAL_STATUSES = (
@@ -51,6 +58,7 @@ class Book(models.Model):
     )
     name = models.CharField(max_length=50)
     authors = models.ManyToManyField(Author)
+    categories = models.ManyToManyField(Category, blank=True)
     cover_picture = models.ImageField(upload_to='book_picture/', default='book_picture/default-book.png')
     approval_status = models.CharField(max_length=1, default='A', choices=APROVAL_STATUSES)
 
@@ -77,6 +85,10 @@ class Product(models.Model):
     edition = models.IntegerField(null=True, blank=True)
     price = models.IntegerField(default=0)
     date_time = models.DateTimeField(default=datetime.now, blank=True)
+
+    @property
+    def serial_count(self):
+        return Serial.objects.filter(product=self).count()
 
     class Meta:
         unique_together = (("owner", "book"),)

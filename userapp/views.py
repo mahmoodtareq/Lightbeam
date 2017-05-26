@@ -1,12 +1,17 @@
+from django.db import IntegrityError
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
+from django.db.models import Max, Min
 
 from .models import *
 from .forms import *
+from .search import *
 
 import json
+
 
 # Create your views here.
 
@@ -83,12 +88,41 @@ def home(request):
         return HttpResponseRedirect('/')
 
     id = request.session['id']
+    user = User.objects.get(id=id)
+
+    form = ProfileForm(initial={'address': user.address, 'mobile_no': user.mobile_no})
 
     template = loader.get_template('user-account.html')
     context = {
-        'user' : User.objects.get(id=id),
+        'user': user,
+        'profileForm': form,
     }
     return HttpResponse(template.render(context, request))
+
+
+def save_profile(request):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST)
+        if not form.is_valid():
+            return HttpResponseRedirect('/')
+
+        _address = form.cleaned_data['address']
+        _mobile_no = form.cleaned_data['mobile_no']
+
+        user = User.objects.get(id=request.session['id'])
+
+        user.address = _address
+        user.mobile_no = _mobile_no
+
+        user.save()
+
+        template = loader.get_template('user-account.html')
+        context = {
+            'user': user,
+            'profileForm': form,
+        }
+
+        return HttpResponse(template.render(context, request))
 
 
 def add_book(request):
@@ -228,16 +262,120 @@ def search_books(request):
         return HttpResponseRedirect('/')
     template = loader.get_template('search-books.html')
     context = {
-
+        'searchForm': SearchForm(),
+        'result': [],
     }
     return HttpResponse(template.render(context, request))
+
+
+def view_book(request, product_id):
+    if not request.session.has_key('id'):
+        return HttpResponseRedirect('/')
+    template = loader.get_template('view-book.html')
+    # product = Product.objects.filter(id=product_id)
+    # print(product)
+
+    context = {
+        'product' : Product.objects.get(id=product_id),
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def profile(request, user_id):
+    if not request.session.has_key('id'):
+        return HttpResponseRedirect('/')
+    template = loader.get_template('profile.html')
+    # product = Product.objects.filter(id=product_id)
+    # print(product)
+
+    context = {
+        'user' : User.objects.get(id=user_id),
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def search(request):
+    if not request.session.has_key('id'):
+        return HttpResponseRedirect('/')
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if not form.is_valid():
+            return render(request, 'search-books.html', {'searchForm':form, 'result':[]})
+        key = form.cleaned_data['query']
+        choice = form.cleaned_data['search_for']
+        id = request.session['id']
+        result = []
+        if choice == '':
+            result = searchAll(key, id)
+        else:
+            if choice == 'B':
+                result = searchBook(key, id)
+            elif choice == 'A':
+                result = searchAuthor(key, id)
+            elif choice == 'C':
+                result = searchCategory(key, id)
+
+        serials = []
+        for product in result:
+            cnt = Serial.objects.filter(product=product).count()
+            serials.append(cnt)
+        return render(request, 'search-books.html', {'searchForm': form, 'result': result})
 
 
 def user_requests(request):
     if not request.session.has_key('id'):
         return HttpResponseRedirect('/')
+    id = request.session['id']
     template = loader.get_template('user-requests.html')
-    context = {
+    serial = Serial.objects.filter(user__id=id)
+    # print(serial.serial_no)
 
+    context = {
+    # from here
+        'userRequests': Serial.objects.filter(user__id=id),
+
+    # to here
     }
     return HttpResponse(template.render(context, request))
+
+
+def book_request(request):
+    if request.is_ajax():
+        product_id = request.POST.get('product_id', '')
+        type = request.POST.get('type', '')
+        id = request.session['id']
+
+        qsMax = Serial.objects.filter(product__id=product_id).aggregate(Max("serial_no"))
+
+        qsMin = Serial.objects.filter(product__id=product_id).aggregate(Min("serial_no"))
+        data = 0
+
+        print(type)
+
+        if type == 'book-the-book':
+            if qsMax is None:
+                data = 0
+            else:
+                serial = Serial()
+                serial.product = Product.objects.get(id=product_id)
+                serial.user = User.objects.get(id=id)
+                serial.serial_no = 1
+                serial.save()
+
+                holder = CurrentHolder()
+                holder.product = Product.objects.get(id=product_id)
+                holder.holder = User.objects.get(id=id)
+                holder.save()
+                data = 1
+        elif type == 'stand-in-queue':
+            serial = Serial()
+            serial.product = Product.objects.get(id=product_id)
+            serial.user = User.objects.get(id=id)
+            max_serial_no = qsMax['serial_no__max']
+            min_serial_no = qsMin['serial_no__min']
+            serial.serial_no = max_serial_no + 1
+            serial.save()
+            data = max_serial_no - min_serial_no + 2
+
+        mimetype = 'application/json'
+        return HttpResponse(data, mimetype)
