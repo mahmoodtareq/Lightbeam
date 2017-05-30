@@ -1,0 +1,5 @@
+1. 3 day rejection mechanism
+2. confirmation
+3. insight
+4. notification
+5. improve product page

@@ -78,6 +78,12 @@ class Product(models.Model):
         ('M', 'Medium'),
         ('B', 'Bad'),
     )
+    CONFIRMATIONS = (
+        ('N', 'No Confirmation'),
+        ('O', 'Owner Confirmed'),
+        ('R', 'Receiver Confirmed'),
+        ('B', 'Both Side Confirmation'),
+    )
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     print_status = models.CharField(max_length=1, null=True, blank=True, choices=PRINT_STATUSES)
@@ -85,6 +91,7 @@ class Product(models.Model):
     edition = models.IntegerField(null=True, blank=True)
     price = models.IntegerField(default=0)
     date_time = models.DateTimeField(default=datetime.now, blank=True)
+    confirmation = models.CharField(max_length=1, null=True, blank=True, choices=CONFIRMATIONS)
 
     @property
     def serial_count(self):

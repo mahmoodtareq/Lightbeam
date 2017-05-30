@@ -343,6 +343,8 @@ def user_requests(request):
 
 
 def book_request(request):
+    if not request.session.has_key('id'):
+        return HttpResponseRedirect('/')
     if request.is_ajax():
         product_id = request.POST.get('product_id', '')
         type = request.POST.get('type', '')
@@ -380,5 +382,29 @@ def book_request(request):
             serial.save()
             data = max_serial_no - min_serial_no + 2
 
+        mimetype = 'application/json'
+        return HttpResponse(data, mimetype)
+
+
+def confirm_product(request):
+    if not request.session.has_key('id'):
+        return HttpResponseRedirect('/')
+    if request.is_ajax():
+        product_id = request.POST.get('product_id', '')
+        product = Product.objects.get(id=product_id)
+        type = request.POST.get('type', '')
+        if type == 'O':
+            if product.confirmation == 'R':
+                product.confirmation = 'B'
+            else:
+                product.confirmation = 'O'
+            product.save()
+        elif type == 'R':
+            if product.confirmation == 'O':
+                product.confirmation = 'B'
+            else:
+                product.confirmation = 'R'
+            product.save()
+        data = 1
         mimetype = 'application/json'
         return HttpResponse(data, mimetype)

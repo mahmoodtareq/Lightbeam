@@ -61,61 +61,74 @@
                     <div class="col-md-9 clearfix" id="user-books">
                         <p class="text-muted lead">You currently have {{ userProducts.count }} book(s).</p>
                         <div class="box">
-                            <form method="post" action="/update-user-books/">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Book</th>
-                                                <th>Authors</th>
-                                                <th>Status</th>
-                                                <th>Price</th>
-                                                <th>Edition</th>
-                                                <th>Print</th>
-                                                <th>Condition</th>
-                                                <th>Delete</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for product in userProducts %}
-                                             <tr>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Book</th>
+                                            <th>Authors</th>
+                                            <th>Status</th>
+                                            <th>Price</th>
+                                            <th>Edition</th>
+                                            <th>Print</th>
+                                            <th>Condition</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for product in userProducts %}
+                                         <tr>
 {#                                                <td>#}
 {#                                                    <a href="#">#}
 {#                                                        <img src="{{ product.owner.profile_picture.url }}" style="max-width: 30%;height: auto;" alt={{ product.book.name }} >#}
 {#                                                    </a>#}
 {#                                                </td>#}
-                                                <td><a href="#">{{ product.book.name }}</a></td>
-                                                <td>{% for author in product.book.authors.all %}
-                                                    {{ author.name }} </br>
-                                                {% endfor %}
-                                                </td>
-                                                <td>
-                                                    {% if product.book.approval_status == 'P' %}
-                                                        <label class="label label-warning">Pending Approval</label>
-                                                    {% elif product.isBooked %}
-                                                        <label class="label label-success">Booked</label>
-                                                    {% elif product.book.approval_status == 'A' %}
-                                                        <label class="label label-info">Not Booked</label>
-                                                    {% endif %}
-                                                </td>
-                                                <td>{{ product.price }}</td>
-
-                                                {% if product.edition != 0 %}<td>{{ product.edition }}</td>
-                                                {% else %}<td> {{ none }} </td>
-                                                {% endif %}
-                                                {% if product.print_status %}<td>{{ product.get_print_status_display }}</td>
-                                                {% else %}<td> {{ none }} </td>
-                                                {% endif %}
-                                                {% if product.condition %}<td>{{ product.get_condition_display }}</td>
-                                                {% else %}<td> {{ none }} </td>
-                                                {% endif %}
-                                                <td><a href="#"><i class="fa fa-trash-o" onclick="alert({{ product.id }})"></i></a></td>
-                                             </tr>
+                                            <td><a href="#">{{ product.book.name }}</a></td>
+                                            <td>{% for author in product.book.authors.all %}
+                                                {{ author.name }} </br>
                                             {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </form>
+                                            </td>
+                                            <td>
+                                                {% if product.confirmation == 'O' %}
+                                                     <label id="status-{{ product.id }}" class="label label-primary">Confimed by Owner</label>
+                                                {% elif product.confirmation == 'R' %}
+                                                     <label id="status-{{ product.id }}" class="label label-primary">Confimed by Receiver</label>
+                                                {% elif product.confirmation == 'B' %}
+                                                     <label id="status-{{ product.id }}" class="label label-success">Confimed by Both</label>
+                                                {% elif product.book.approval_status == 'P' %}
+                                                    <label id="status-{{ product.id }}" class="label label-warning">Pending Approval</label>
+                                                {% elif product.isBooked %}
+                                                    <label id="status-{{ product.id }}" class="label label-info">Booked</label>
+                                                {% elif product.book.approval_status == 'A' %}
+                                                    <label id="status-{{ product.id }}" class="label label-default">Not Booked</label>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ product.price }}</td>
+
+                                            {% if product.edition != 0 %}<td>{{ product.edition }}</td>
+                                            {% else %}<td> {{ none }} </td>
+                                            {% endif %}
+                                            {% if product.print_status %}<td>{{ product.get_print_status_display }}</td>
+                                            {% else %}<td> {{ none }} </td>
+                                            {% endif %}
+                                            {% if product.condition %}<td>{{ product.get_condition_display }}</td>
+                                            {% else %}<td> {{ none }} </td>
+                                            {% endif %}
+
+                                            <td>
+                                                {% if product.confirmation == 'O' or product.confirmation == 'B' %}
+                                                    <button id="action-{{ product.id }}" class="btn btn-success btn-xs disabled">Confirmed</button>
+                                                {% elif product.isBooked %}
+                                                    <button id="action-{{ product.id }}" class="btn btn-primary btn-xs" onclick="confirmProduct({{ product.id }}, 'O')">Confirm</button>
+                                                {% else %}
+                                                    <button id="action-{{ product.id }}" class="btn btn-danger btn-xs" onclick="">Delete</button>
+                                                {% endif %}
+                                            </td>
+                                         </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
 
 {#                            <img src="{{ product.book.cover_picture.url }}" >#}
 
@@ -233,6 +246,17 @@ _________________________________________________________ -->
 
     </div>
     <!-- /#all -->
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript">
+    </script> <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
+
+
+    <script>
+        var csrftoken = '{{ csrf_token }}';
+    </script>
+    <script src="../static/js/lightbeam.confirmproduct.js" type="text/javascript"></script>
+    <script src="../static/js/lightbeam.deleteproduct.js" type="text/javascript"></script>
 
 </body>
 

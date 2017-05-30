@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^save-profile/', views.save_profile, name="save-profile"),
     url(r'^view-book/(?P<product_id>[0-9]+)$', views.view_book, name='view_book'),
     url(r'^user/(?P<user_id>[0-9]+)$', views.profile, name='profile'),
+    url(r'^confirm-product/', views.confirm_product, name='confirm_product'),
 ]
