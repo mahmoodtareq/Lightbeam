@@ -57,11 +57,25 @@
                 <div class="row">
 
                     <div class="col-md-9 clearfix" id="#">
-
+                        <p class="text-muted lead">You currently have {{ notifications.count }} notifications(s).</p>
                         <div class="box clearfix">
-
+                            {% for notif in notifications %}
+                                {% if notif.type == 'CH' %}
+                                    <div class="alert alert-success" style="cursor: pointer;" onclick="window.location='/view-book/{{ notif.product.id }}';">
+                                        <img src="{{ notif.product.book.cover_picture.url }}"  style="float: left; padding-right: 10px; max-width:6%;">
+                                        <p style="font-size: 20px"><strong>{{ notif.title }}</strong></p>
+                                        <p>{{ notif.text }}</p>
+                                    </div>
+                                {% elif notif.type == 'TH' %}
+                                    <div class="alert alert-danger" style="cursor: pointer;" onclick="window.location='/view-book/{{ notif.product.id }}';">
+{#                                        <p style="font-size: 50px; float: left; padding-right: 10px"><i class="fa fa-times"></i></p>#}
+                                        <img src="{{ notif.product.book.cover_picture.url }}"  style="float: left; padding-right: 10px; max-width:6%;">
+                                        <p style="font-size: 20px"><strong>{{ notif.title }}</strong></p>
+                                        <p>{{ notif.text }}</p>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
-
                     </div>
                     <!-- /.col-md-9 -->
 

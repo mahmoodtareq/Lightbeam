@@ -142,3 +142,20 @@ class CurrentHolder(models.Model):
 
     def __str__(self):
         return self.product.book.name + ' - ' + self.holder.student_id
+
+
+class Notification(models.Model):
+    NOTIFICATIONS = (
+        ('CH', 'Current Holding'),
+        ('TH', 'Timeout Holding'),
+        ('BB', 'Book Booked'),
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50)
+    text = models.CharField(max_length=100)
+    type = models.CharField(max_length=2, choices=NOTIFICATIONS)
+    date_time = models.DateTimeField(default=datetime.now, blank=True)
+
+    def __str__(self):
+        return self.user.student_id + ' - ' + self.type

@@ -9,6 +9,7 @@ from django.db.models import Max, Min
 from .models import *
 from .forms import *
 from .search import *
+from .alloc import *
 
 import json
 
@@ -86,7 +87,7 @@ def logout(request):
 def home(request):
     if not request.session.has_key('id'):
         return HttpResponseRedirect('/')
-
+    update_holder()
     id = request.session['id']
     user = User.objects.get(id=id)
 
@@ -251,8 +252,9 @@ def notifications(request):
     if not request.session.has_key('id'):
         return HttpResponseRedirect('/')
     template = loader.get_template('notifications.html')
+    id = request.session['id']
     context = {
-
+        'notifications' : Notification.objects.filter(user__id=id)
     }
     return HttpResponse(template.render(context, request))
 
