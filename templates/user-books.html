@@ -83,7 +83,7 @@
 {#                                                        <img src="{{ product.owner.profile_picture.url }}" style="max-width: 30%;height: auto;" alt={{ product.book.name }} >#}
 {#                                                    </a>#}
 {#                                                </td>#}
-                                            <td><a href="#">{{ product.book.name }}</a></td>
+                                            <td><a href="/view-book/{{ product.id }}">{{ product.book.name }}</a></td>
                                             <td>{% for author in product.book.authors.all %}
                                                 {{ author.name }} </br>
                                             {% endfor %}

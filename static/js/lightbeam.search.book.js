@@ -14,7 +14,7 @@ function bookTheBook(btn, product_id) {
             {
                 btn.className="btn btn-success";
                 btn.innerHTML="booked successfully!";
-                contact.innerHTML="contact information..."
+                contact.innerHTML="view profile for contact information"
             }
             else
             {

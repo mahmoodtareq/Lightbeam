@@ -62,6 +62,13 @@ class Book(models.Model):
     cover_picture = models.ImageField(upload_to='book_picture/', default='book_picture/default-book.png')
     approval_status = models.CharField(max_length=1, default='A', choices=APROVAL_STATUSES)
 
+    @property
+    def author_list(self):
+        list = ""
+        for author in self.authors.all():
+            list = list + author.name + ', '
+        return list[:-2]
+
     def __str__(self):
         return self.name
 
@@ -113,6 +120,12 @@ class Product(models.Model):
     @property
     def isBooked(self):
         return Product.objects.filter(currentholder__product_id=self.id).count() == 1
+
+    def condition_verbose(self):
+        return dict(Product.CONDITIONS)[self.condition]
+
+    def print_status_verbose(self):
+        return dict(Product.PRINT_STATUSES)[self.print_status]
 
 
 class Serial(models.Model):

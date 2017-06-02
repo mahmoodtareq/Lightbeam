@@ -60,40 +60,19 @@
 
                 <div class="row">
 
-                    <div class="col-md-6 clearfix" id="#">
+                    <div class="col-md-9 clearfix" id="#">
 
-                         <div class="panel panel-primary">
-                                <div class="panel-heading">{{ product.book.name }}</div>
-                                <div class="panel-body">
-                                    <div style="float: left">
-                                        Owner <a href="#">{{ product.owner.first_name }} {{ product.owner.last_name }}</a><br>
-                                        Authors:
-                                        {% for author in product.book.authors.all %}
-                                            {{ author.name }}
-                                        {% endfor %}
-                                        <br><br>
-                                        {% if product.serial_count == 0 %}
-                                            <button id="btn-{{ product.id }}" onclick="bookTheBook(this, {{ product.id }})" type="button" class="btn btn-primary">Book the book!</button>
-                                            <span id="txt-{{ product.id }}" style="font-size: small; font-family: Consolas; color: #a02121"></span>
-                                            <div id="contact-{{ product.id }}" style="font-size: small; font-family: Consolas; color: green"></div>
-                                        {% else %}
-                                            <button id="btn-{{ product.id }}" onclick="standInQueue(this, {{ product.id }})" type="button" class="btn btn-warning">Stand in queue</button>
-                                            <span id="txt-{{ product.id }}" style="font-size: small; font-family: Consolas; color: #a02121">
-                                                (Currently {{ product.serial_count }} people are in queue.)
-                                            </span>
-                                        {% endif %}
-                                    </div>
-
-                                    <img src="{{ product.book.cover_picture.url }}" alt="" style="float: right" class="img-responsive center-block" height="80px" width="80px" />
-                                </div>
-{#                                <div class="panel-footer">#}
-{#                                    <button type="button" class="btn btn-primary">Book the book!</button>#}
-{#                                </div>#}
-{#                                <div class="panel-group"><img src="{{ product.book.cover_picture.url }}" alt="" class="img-responsive center-block" height="50px" width="50px" />#}
-{#                                </div>#}
-{#                                {{ book.name }}#}
-                            </div>
-
+                         <div class="heading">
+                             <h3 class="text-uppercase">Basic Information</h3>
+                             <img src="{{ product.book.cover_picture.url }}" alt="" style="float: right" class="img-responsive center-block" height="200px" width="200px" />
+                             <br><br><strong>Owner :</strong> <a href="/user/{{ product.owner.id }}"> {{ product.owner.first_name }} {{ product.owner.last_name }}</a>
+                             <br><br><strong>Book Name :</strong> {{ product.book.name }}
+                             <br><br><strong>Authors :</strong> {{ product.book.author_list }}
+                             <br><br><strong>Edition :</strong> {{ product.edition }}
+                             <br><br><strong>Print Status :</strong> {{ product.print_status_verbose }}
+                             <br><br><strong>Condition :</strong> {{ product.condition_verbose }}
+                             <br><br><strong>Price :</strong> BDT {{ product.price }}
+                         </div>
                     </div>
 
                     <div class="col-md-3 clearfix" id="#">
