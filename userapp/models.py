@@ -154,6 +154,7 @@ class Notification(models.Model):
     product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     text = models.CharField(max_length=100)
+    link = models.CharField(max_length=100, null=True, blank=True)
     type = models.CharField(max_length=2, choices=NOTIFICATIONS)
     date_time = models.DateTimeField(default=datetime.now, blank=True)
 

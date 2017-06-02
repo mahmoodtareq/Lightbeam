@@ -73,6 +73,13 @@
                                         <p style="font-size: 20px"><strong>{{ notif.title }}</strong></p>
                                         <p>{{ notif.text }}</p>
                                     </div>
+                                {% elif notif.type == 'BB' %}
+                                    <div class="alert alert-info" style="cursor: pointer;" onclick="window.location='{{ notif.link }}';">
+{#                                        <p style="font-size: 50px; float: left; padding-right: 10px"><i class="fa fa-times"></i></p>#}
+                                        <img src="{{ notif.product.book.cover_picture.url }}"  style="float: left; padding-right: 10px; max-width:6%;">
+                                        <p style="font-size: 20px"><strong>{{ notif.title }}</strong></p>
+                                        <p>{{ notif.text }}</p>
+                                    </div>
                                 {% endif %}
                             {% endfor %}
                         </div>

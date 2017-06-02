@@ -77,7 +77,7 @@
                                     </thead>
                                     <tbody>
                                         {% for product in userProducts %}
-                                         <tr>
+                                         <tr id="tr-{{ product.id }}">
 {#                                                <td>#}
 {#                                                    <a href="#">#}
 {#                                                        <img src="{{ product.owner.profile_picture.url }}" style="max-width: 30%;height: auto;" alt={{ product.book.name }} >#}
@@ -121,7 +121,7 @@
                                                 {% elif product.isBooked %}
                                                     <button id="action-{{ product.id }}" class="btn btn-primary btn-xs" onclick="confirmProduct({{ product.id }}, 'O')">Confirm</button>
                                                 {% else %}
-                                                    <button id="action-{{ product.id }}" class="btn btn-danger btn-xs" onclick="">Delete</button>
+                                                    <button id="action-{{ product.id }}" class="btn btn-danger btn-xs" onclick="deleteProduct({{ product.id }})">Delete</button>
                                                 {% endif %}
                                             </td>
                                          </tr>

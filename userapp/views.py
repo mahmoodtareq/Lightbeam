@@ -373,6 +373,13 @@ def book_request(request):
                 holder.product = Product.objects.get(id=product_id)
                 holder.holder = User.objects.get(id=id)
                 holder.save()
+
+                notif = Notification(user=serial.product.owner, product=serial.product, type='BB')
+                notif.title = 'Book Booked - ' + serial.product.book.name
+                notif.link = '/user/' + str(id)
+                notif.text = 'Your book has been booked by ' + serial.user.first_name + ' ' + serial.user.last_name + '. Click to see profile.'
+                notif.save()
+
                 data = 1
         elif type == 'stand-in-queue':
             serial = Serial()
@@ -407,6 +414,18 @@ def confirm_product(request):
             else:
                 product.confirmation = 'R'
             product.save()
+        data = 1
+        mimetype = 'application/json'
+        return HttpResponse(data, mimetype)
+
+
+def delete_product(request):
+    if not request.session.has_key('id'):
+        return HttpResponseRedirect('/')
+    if request.is_ajax():
+        product_id = request.POST.get('product_id', '')
+        product = Product.objects.get(id=product_id)
+        product.delete()
         data = 1
         mimetype = 'application/json'
         return HttpResponse(data, mimetype)
