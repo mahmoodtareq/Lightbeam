@@ -26,3 +26,6 @@ urlpatterns = [
 
 if settings.DEBUG is True:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+from userapp.alloc import init_periodic_check
+# init_periodic_check()

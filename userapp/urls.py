@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^user/(?P<user_id>[0-9]+)$', views.profile, name='profile'),
     url(r'^confirm-product/', views.confirm_product, name='confirm_product'),
     url(r'^delete-product/', views.delete_product, name='delete_product'),
+    url(r'^delete-request/', views.delete_request, name='delete_request'),
 ]

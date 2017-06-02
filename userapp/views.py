@@ -87,7 +87,7 @@ def logout(request):
 def home(request):
     if not request.session.has_key('id'):
         return HttpResponseRedirect('/')
-    update_holder()
+
     id = request.session['id']
     user = User.objects.get(id=id)
 
@@ -334,12 +334,14 @@ def user_requests(request):
     template = loader.get_template('user-requests.html')
     serial = Serial.objects.filter(user__id=id)
     # print(serial.serial_no)
+    currentHoldings = CurrentHolder.objects.filter(holder__id=id)
+    products = currentHoldings.values('product')
+    userRequests = Serial.objects.filter(user__id=id).exclude(product__in=products)
 
     context = {
-    # from here
-        'userRequests': Serial.objects.filter(user__id=id),
-
-    # to here
+        'total' : currentHoldings.count() + userRequests.count(),
+        'currentHoldings' : currentHoldings,
+        'userRequests': userRequests,
     }
     return HttpResponse(template.render(context, request))
 
@@ -426,6 +428,18 @@ def delete_product(request):
         product_id = request.POST.get('product_id', '')
         product = Product.objects.get(id=product_id)
         product.delete()
+        data = 1
+        mimetype = 'application/json'
+        return HttpResponse(data, mimetype)
+
+
+def delete_request(request):
+    if not request.session.has_key('id'):
+        return HttpResponseRedirect('/')
+    if request.is_ajax():
+        serial_id = request.POST.get('serial_id', '')
+        serial = Serial.objects.get(id=serial_id)
+        serial.delete()
         data = 1
         mimetype = 'application/json'
         return HttpResponse(data, mimetype)

@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from .verify import *
 
@@ -139,6 +139,10 @@ class CurrentHolder(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, unique=True)
     holder = models.ForeignKey(User, on_delete=models.CASCADE)
     date_time = models.DateTimeField(default=datetime.now, blank=True)
+
+    @property
+    def last_time(self):
+        return self.date_time + timedelta(days=3)
 
     def __str__(self):
         return self.product.book.name + ' - ' + self.holder.student_id

@@ -57,46 +57,70 @@
                 <div class="row">
 
                     <div class="col-md-9 clearfix" id="#">
-                        <p class="text-muted lead">You currently have {{ userRequests.count }} request(s).</p>
+                        <p class="text-muted lead">You currently have {{ total }} request(s).</p>
                         <div class="box">
-                            <form method="post" action="/update-user-books/">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Book</th>
-                                                <th>Owner</th>
-                                                <th>Status</th>
-                                                <th>Info</th>
-                                                <th>Delete</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for requests in userRequests %}
-                                             <tr>
-{#                                                <td>#}
-{#                                                    <a href="#">#}
-{#                                                        <img src="{{ product.owner.profile_picture.url }}" style="max-width: 30%;height: auto;" alt={{ product.book.name }} >#}
-{#                                                    </a>#}
-{#                                                </td>#}
-                                                <td><a href="/view-book/{{ requests.product.id }}">{{ requests.product.book.name }}</a></td>
-                                                <td><a href="/user/{{ requests.product.owner.id }}">{{ requests.product.owner.first_name}} {{ requests.product.owner.last_name}}</a></td>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Book</th>
+                                            <th>Owner</th>
+                                            <th>Status</th>
+                                            <th>Info</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for holdings in currentHoldings %}
+                                        <tr>
+                                            <td><a href="/view-book/{{ holdings.product.id }}">{{ holdings.product.book.name }}</a></td>
+                                            <td><a href="/user/{{ holdings.product.owner.id }}">{{ holdings.product.owner.first_name}} {{ holdings.product.owner.last_name}}</a></td>
 
+                                            <td>
+                                            {% if holdings.product.confirmation == 'O' %}
+                                                 <label id="status-{{ holdings.product.id }}" class="label label-primary">Confimed by Owner</label>
+                                            {% elif holdings.product.confirmation == 'R' %}
+                                                 <label id="status-{{ holdings.product.id }}" class="label label-primary">Confimed by Receiver</label>
+                                            {% elif holdings.product.confirmation == 'B' %}
+                                                 <label id="status-{{ holdings.product.id }}" class="label label-success">Confimed by Both</label>
+                                            {% elif holdings.product.book.approval_status == 'P' %}
+                                                <label id="status-{{ holdings.product.id }}" class="label label-warning">Pending Approval</label>
+                                            {% elif holdings.product.isBooked %}
+                                                <label id="status-{{ holdings.product.id }}" class="label label-info">Booked</label>
+                                            {% endif %}
+                                            </td>
 
-                                                 {% if requests.serial_no == 1 %}<td><span class="label label-success">booked</span></td>
-                                                {% else %}<td><span class="label label-warning">in queue</span></td>
+                                            <td>Collect before <strong>{{ holdings.last_time }}</strong></td>
+                                            <td>
+                                                {% if holdings.product.confirmation == 'R' or holdings.product.confirmation == 'B' %}
+                                                    <button id="action-{{ holdings.product.id }}" class="btn btn-success btn-xs disabled">
+                                                        Confirmed
+                                                    </button>
+                                                {% elif holdings.product.isBooked %}
+                                                    <button id="action-{{ holdings.product.id }}" class="btn btn-primary btn-xs" onclick="confirmProduct({{ holdings.product.id }}, 'R')">
+                                                        Confirm
+                                                    </button>
                                                 {% endif %}
+                                        </td>
+                                        </tr>
+                                        {% endfor %}
 
-                                                {% if requests.serial_no == 1 %}<td>Collect the book in some days</td>
-                                                {% else %}<td>You are at position {{ requests.serial_no }} in the queue</td>
-                                                {% endif %}
-                                                <td><a href="#"><i class="fa fa-trash-o" onclick="Remove()"></i></a></td>
-                                             </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </form>
+                                        {% for request in userRequests %}
+                                         <tr id="tr-{{ request.id }}">
+                                             <td><a href="/view-book/{{ request.product.id }}">{{ request.product.book.name }}</a></td>
+                                             <td><a href="/user/{{ request.product.owner.id }}">{{ request.product.owner.first_name}} {{ request.product.owner.last_name}}</a></td>
+                                             <td><span class="label label-warning">in queue</span></td>
+                                             <td>You are at position {{ request.serial_no }} in the queue</td>
+                                             <td>
+                                                 <button id="action-{{ request.id }}" class="btn btn-danger btn-xs" onclick="deleteRequest({{ request.id }})">
+                                                     Delete
+                                                 </button>
+                                             </td>
+                                         </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
 
 {#                            <img src="{{ product.book.cover_picture.url }}" >#}
 
@@ -221,8 +245,11 @@ _________________________________________________________ -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript">
     </script> <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
 
-
-
+    <script>
+        var csrftoken = '{{ csrf_token }}';
+    </script>
+    <script src="../static/js/lightbeam.confirmproduct.js" type="text/javascript"></script>
+    <script src="../static/js/lightbeam.deleterequest.js" type="text/javascript"></script>
 
 </body>
 
